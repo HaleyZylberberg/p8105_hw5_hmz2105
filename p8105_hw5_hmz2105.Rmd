@@ -7,3 +7,27 @@ output: github_document
 ```{r setup}
 library (tidyverse)
 ```
+
+Problem 2
+
+```{r import and tidy dataset}
+file_names = list.files(path = "data", pattern = "*.csv", full.names = TRUE)
+
+data_list = map(file_names, ~read.csv(.x))
+
+experiment_df = data.frame(file_name = file_names, do.call(rbind.data.frame, data_list)) |>
+  separate(file_name, into = c("arm", "subject_id"), sep = "_") |>
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    names_prefix = "week_",
+    values_to = "value"
+  ) |>
+ mutate(arm = gsub("data/", "", arm),
+        subject_id= gsub(".csv", "", subject_id),
+        subject_id= gsub("0", "", subject_id)) |>
+  select (subject_id, arm, week, value)
+
+
+
+```
