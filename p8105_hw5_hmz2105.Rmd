@@ -8,7 +8,9 @@ output: github_document
 library (tidyverse)
 ```
 
-Problem 2
+## Problem 2
+
+Create a tidy dataframe of this dataset which includes participants among a control group and an experiment group with 8 weeks of measurement data taken.
 
 ```{r import and tidy dataset}
 file_names = list.files(path = "data", pattern = "*.csv", full.names = TRUE)
@@ -24,10 +26,18 @@ experiment_df = data.frame(file_name = file_names, do.call(rbind.data.frame, dat
     values_to = "value"
   ) |>
  mutate(arm = gsub("data/", "", arm),
-        subject_id= gsub(".csv", "", subject_id),
-        subject_id= gsub("0", "", subject_id)) |>
+        subject_id= gsub(".csv", "", subject_id)) |>
   select (subject_id, arm, week, value)
 
-
-
 ```
+
+```{r spaghetti plot}
+experiment_df |>
+ggplot(aes(x = week, y = value, color = arm)) +
+  geom_point() + 
+  geom_line(aes(group = interaction(subject_id, arm))) +
+  labs(x = "Week", y = "Value", color = "Study Arm") +
+  theme_minimal()
+```
+
+In this spaghetti plot we see that the experimental group had an increase in the value measured from week 1 through week 8 while the control group showed a slight decrease in the value measured over this time period.
