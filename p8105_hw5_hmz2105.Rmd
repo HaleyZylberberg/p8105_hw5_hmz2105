@@ -41,3 +41,10 @@ ggplot(aes(x = week, y = value, color = arm)) +
 ```
 
 In this spaghetti plot we see that the experimental group had an increase in the value measured from week 1 through week 8 while the control group showed a slight decrease in the value measured over this time period.
+
+
+## Problem 3
+
+```{r simulation of ttest}
+
+```
